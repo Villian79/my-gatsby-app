@@ -1,10 +1,12 @@
 import * as React from "react"
-import { Link } from "gatsby"
+import { Link, graphql } from "gatsby"
 import { StaticImage } from "gatsby-plugin-image"
 
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 import * as styles from "../components/index.module.css"
+import { SliceZone } from "@prismicio/react"
+import { components } from "../slices/index"
 
 const links = [
   {
@@ -69,54 +71,79 @@ const moreLinks = [
 
 const utmParameters = `?utm_source=starter&utm_medium=start-page&utm_campaign=default-starter`
 
-const IndexPage = () => (
-  <Layout>
-    <div className={styles.textCenter}>
-      <StaticImage
-        src="../images/example.png"
-        loading="eager"
-        width={64}
-        quality={95}
-        formats={["auto", "webp", "avif"]}
-        alt=""
-        style={{ marginBottom: `var(--space-3)` }}
+export const query = graphql`
+  {
+    prismicHomepage(data: { title: { eq: "Homepage" } }) {
+      data {
+        title
+        body {
+          ... on PrismicHomepageDataBodyPricingOptions {
+            id
+            slice_type
+            items {
+              amount_per_month
+              is_most_popular
+              price_option_title {
+                richText
+              }
+              pricing_option_description {
+                richText
+              }
+            }
+          }
+
+          ... on PrismicHomepageDataBodyCallToAction {
+            id
+            slice_type
+            primary {
+              description {
+                richText
+              }
+              title1 {
+                richText
+              }
+              destination_label_text
+              destination_page {
+                uid
+              }
+              image {
+                alt
+                gatsbyImageData
+              }
+            }
+          }
+
+          ... on PrismicHomepageDataBodyHero {
+            id
+            slice_type
+            primary {
+              title {
+                richText
+              }
+              subtitle {
+                richText
+              }
+              background_image {
+                gatsbyImageData
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
+const IndexPage = props => {
+  return (
+    <Layout>
+      <SliceZone
+        slices={props.data.prismicHomepage.data.body}
+        components={components}
       />
-      <h1>
-        Welcome to <b>Gatsby!</b>
-      </h1>
-      <p className={styles.intro}>
-        <b>Example pages:</b>{" "}
-        {samplePageLinks.map((link, i) => (
-          <React.Fragment key={link.url}>
-            <Link to={link.url}>{link.text}</Link>
-            {i !== samplePageLinks.length - 1 && <> · </>}
-          </React.Fragment>
-        ))}
-        <br />
-        Edit <code>src/pages/index.js</code> to update this page.
-      </p>
-    </div>
-    <ul className={styles.list}>
-      {links.map(link => (
-        <li key={link.url} className={styles.listItem}>
-          <a
-            className={styles.listItemLink}
-            href={`${link.url}${utmParameters}`}
-          >
-            {link.text} ↗
-          </a>
-          <p className={styles.listItemDescription}>{link.description}</p>
-        </li>
-      ))}
-    </ul>
-    {moreLinks.map((link, i) => (
-      <React.Fragment key={link.url}>
-        <a href={`${link.url}${utmParameters}`}>{link.text}</a>
-        {i !== moreLinks.length - 1 && <> · </>}
-      </React.Fragment>
-    ))}
-  </Layout>
-)
+    </Layout>
+  )
+}
 
 /**
  * Head export to define metadata for the page

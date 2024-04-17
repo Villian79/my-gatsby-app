@@ -5,16 +5,24 @@
   "version": "0.1.0",
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "dependencies": {
+    "@formspree/react": "^2.5.1",
+    "@prismicio/react": "^2.7.3",
     "gatsby": "^5.12.4",
-    "gatsby-plugin-image": "^3.12.0",
+    "gatsby-plugin-image": "^3.12.1",
     "gatsby-plugin-manifest": "^5.12.0",
     "gatsby-plugin-sharp": "^5.12.0",
     "gatsby-source-filesystem": "^5.12.0",
+    "gatsby-source-prismic": "^6.0.1",
     "gatsby-transformer-sharp": "^5.12.0",
+    "gbimage-bridge": "^0.2.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-helmet": "^6.1.0",
+    "sharp": "^0.32.6",
+    "styled-components": "^6.1.0"
   },
   "devDependencies": {
+    "parcel-bundler": "^1.12.5",
     "prettier": "^2.8.8"
   },
   "keywords": [
